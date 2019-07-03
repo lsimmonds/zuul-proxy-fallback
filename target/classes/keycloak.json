@@ -1,0 +1,8 @@
+{
+  "realm": "Test",
+  "auth-server-url" : "http://127.0.0.1:8084/auth",
+  "resource" : "zipkin",
+  "credentials": {
+    "secret": "6803e379-b6f9-4c2f-8945-ab8b8573b9d4"
+  }
+}

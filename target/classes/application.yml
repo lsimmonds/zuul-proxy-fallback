@@ -1,0 +1,68 @@
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+zuul:
+  ignored-headers:
+    Access-Control-Allow-Credentials, Access-Control-Allow-Origin
+  sensitive-headers:
+    Cookie,Set-Cookie,Authorization
+  routes:
+    zipkin:
+      url: http://127.0.0.1:9411/zipkin
+      stripPrefix: true
+    geoserver:
+      #      url: http://127.0.0.1:8080/geoserver
+      path: /**
+      stripPrefix: true
+      serviceId: geoserver
+      geopackage:
+        url: http://127.0.0.1:8081/service-instances
+
+geoserver:
+  ribbon:
+    listOfServers: http://127.0.0.1:8080/geoserver/
+
+keycloak:
+  auth-server-url: http://localhost:8084/auth
+  resource: zipkin
+  realm: Test
+  ssl-required:  external
+  credentials.secret:  f1d7776a-8a9b-4115-83a6-5558bc01025b
+  use-resource-role-mappings:  true
+  securityConstraints:
+    - authRoles:
+        - user
+      securityCollections:
+        - patterns:
+            - /zipkin/*
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+
+ribbon:
+  eureka:
+    enabled: false
+  ReadTimeout: 600000
+
+spring:
+  application:
+    name: gatekeeper
+  servlet:
+    multipart:
+      max-file-size: 2048MB
+      max-request-size: 4096MB
+
+server:
+  port: 8765
+  tomcat:
+    max-http-post-size: -1
+
+endpoints:
+  routes:
+    sensitive: false
