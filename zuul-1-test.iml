@@ -20,6 +20,16 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.keycloak:keycloak-authz-client:6.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.keycloak:keycloak-core:6.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.keycloak:keycloak-common:6.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.keycloak:keycloak-spring-boot-starter:6.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.keycloak:keycloak-spring-boot-2-adapter:6.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.keycloak:keycloak-spring-boot-adapter-core:6.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.keycloak:spring-boot-container-bundle:6.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.keycloak:keycloak-spring-security-adapter:6.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.keycloak:keycloak-adapter-spi:6.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.keycloak:keycloak-adapter-core:6.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:2.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-starter:2.1.0.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.cloud:spring-cloud-context:2.1.0.RELEASE" level="project" />
