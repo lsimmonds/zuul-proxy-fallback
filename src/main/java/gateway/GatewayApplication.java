@@ -1,15 +1,17 @@
 package gateway;
 
-import gateway.filters.route.KeycloakFilterRoute;
+import gateway.filters.post.GeoserverPost;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.cloud.netflix.zuul.filters.route.FallbackProvider;
 import org.springframework.context.annotation.Bean;
-import gateway.filters.pre.SimpleFilter;
 import org.springframework.web.client.RestTemplate;
 
+//Make error filter common to both
+//Test with real geo package
+//What about GeoServer errors on successful calls? (they return 200) (serach body for "ServiceExceptionReport "?)
 @EnableZuulProxy
 @SpringBootApplication
 public class GatewayApplication {
@@ -19,19 +21,9 @@ public class GatewayApplication {
     }
 
     @Bean
-    public SimpleFilter simpleFilter() {
-        return new SimpleFilter();
+    public GeoserverPost geoserverPost() {
+        return new GeoserverPost();
     }
-
-    @Bean
-    public KeycloakFilterRoute keycloakFilterRoute() {
-        return new KeycloakFilterRoute();
-    }
-
-//    @Bean
-//    public GeoserverRoute geoserverRoute() {
-//        return new GeoserverRoute();
-//    }
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
@@ -40,14 +32,8 @@ public class GatewayApplication {
     }
 
     @Bean
-    public FallbackProvider fallbackProvider () {
+    public FallbackProvider fallbackProvider() {
         return new MyFallbackProvider();
     }
-//    @Bean
-//    public SimpleHostRoutingFilter simpleHostRoutingFilter(ProxyRequestHelper helper,
-//                                                           ZuulProperties zuulProperties,
-//                                                           ApacheHttpClientConnectionManagerFactory connectionManagerFactory,
-//                                                           ApacheHttpClientFactory httpClientFactory) {
-//        return new GeoserverRoute(helper, zuulProperties, connectionManagerFactory, httpClientFactory);
-//    }
+
 }

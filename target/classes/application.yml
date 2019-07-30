@@ -19,6 +19,7 @@ zuul:
       serviceId: geoserver
       geopackage:
         url: http://127.0.0.1:8081/service-instances
+        rootPath: C:\Users\lsimmonds.CC011\Downloads\
 
 geoserver:
   ribbon:

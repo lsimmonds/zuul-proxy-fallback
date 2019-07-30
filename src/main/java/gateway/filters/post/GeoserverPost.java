@@ -1,33 +1,29 @@
-package gateway.filters.route;
+package gateway.filters.post;
 
-import com.netflix.client.ClientException;
+import com.google.common.io.CharStreams;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import gateway.MyFallbackProvider;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.client.ClientHttpResponse;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
 
 import static org.springframework.cloud.netflix.zuul.filters.support.FilterConstants.FORWARD_TO_KEY;
 
-public class GeoserverRoute extends ZuulFilter {
+public class GeoserverPost extends ZuulFilter {
 
     @Autowired
     private MyFallbackProvider fallbackProvider;
 
     @Override
     public String filterType() {
-        return "route";
+        return "post";
     }
 
     @Override
@@ -39,8 +35,33 @@ public class GeoserverRoute extends ZuulFilter {
     public boolean shouldFilter() {
         //if route is geoserver and body contains "ServiceExceptionReport"
         RequestContext ctx = RequestContext.getCurrentContext();
-        Boolean isGeoserverCall = ctx.getRequest().getRequestURL().toString().contains("/geoserver/") && !ctx.getRequest().getRequestURL().toString().contains(fallbackProvider.environment.getProperty("zuul.routes.geoserver.geopackage.url"));
-        return ctx.getResponseBody().contains("ServiceExceptionReport") && isGeoserverCall;
+        Boolean isGeoserverCall = ctx.getRequest().getRequestURL().toString().contains("/geoserver/")
+                && !ctx.getRequest().getRequestURL().toString().contains(fallbackProvider.environment.getProperty("zuul.routes.geoserver.geopackage.url"));
+        String responseBody = null;
+        if (ctx.getResponseGZipped()) {
+            try {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int len;
+                // read bytes from the input stream and store them in buffer
+                while ((len = ctx.getResponseDataStream().read(buffer)) != -1) {
+                    // write bytes from the buffer into output stream
+                    baos.write(buffer, 0, len);
+                }
+                InputStream checker = new ByteArrayInputStream(baos.toByteArray());
+                InputStream resetter = new ByteArrayInputStream(baos.toByteArray());
+
+                InputStreamReader inputStreamReader = new InputStreamReader(new GZIPInputStream(checker), Charset.defaultCharset());
+                responseBody = CharStreams.toString(inputStreamReader);
+
+                ctx.setResponseDataStream(resetter);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return responseBody != null
+                && responseBody.contains("ServiceExceptionReport")
+                && isGeoserverCall;
     }
 
     @Override
