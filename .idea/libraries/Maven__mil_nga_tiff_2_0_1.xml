@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: mil.nga:tiff:2.0.1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/mil/nga/tiff/2.0.1/tiff-2.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/mil/nga/tiff/2.0.1/tiff-2.0.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/mil/nga/tiff/2.0.1/tiff-2.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
